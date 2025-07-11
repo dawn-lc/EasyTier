@@ -1,33 +1,37 @@
 ::BATCH_START
 @ECHO off
 SETLOCAL EnableDelayedExpansion
+SET RequiresRunAdmin=yes
 TITLE Initializing Script...
-CD /d %~dp0   
+CD /d %~dp0
 SET ScriptPath=\^"%~f0\^"
 SET ScriptRoot=%~dp0
 SET ScriptRoot=\^"!ScriptRoot:~0,-1!\^"
 SET Args=%*
-IF DEFINED Args (SET Args=!Args:"=\"!)
-<NUL SET /p="Checking PowerShell ... "
+IF DEFINED Args ( SET Args=!Args:"=\"! )
+SET "PSSH=PowerShell -NoLogo -NoProfile -ExecutionPolicy Bypass"
+<NUL SET /p="Checking powershell ... "
 WHERE /q PowerShell 
-IF !ERRORLEVEL! NEQ 0 (ECHO PowerShell is not installed. & PAUSE & EXIT)
-PowerShell -Command "if ($PSVersionTable.PSVersion.Major -lt 3) { exit 1 }"
-IF !ERRORLEVEL! NEQ 0 (ECHO Requires PowerShell 3 or later. & PAUSE & EXIT)
+IF !ERRORLEVEL! NEQ 0 ( ECHO Fail & ECHO PowerShell is not installed. & PAUSE & EXIT )
 ECHO OK
+IF /I "!RequiresRunAdmin!"=="no" ( GOTO NotRunAdmin )
 <NUL SET /p="Checking execute permissions ... "
-PowerShell -Command "if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { exit 1 }"
-IF !ERRORLEVEL! NEQ 0 (CLS & ECHO Restart with administrator privileges ... & PowerShell -Command "Start-Process cmd.exe -Verb RunAs -ArgumentList '/k CD /d !ScriptRoot! && !ScriptPath! !Args!'" & EXIT)
+!PSSH! -Command "if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { exit 1 }"
+IF !ERRORLEVEL! NEQ 0 ( ECHO Fail & ECHO Restart with administrator & !PSSH! -Command "Start-Process cmd.exe -Verb RunAs -ArgumentList '/k CD /d !ScriptRoot! && !ScriptPath! !Args!'" & EXIT )
+ECHO OK
+:NotRunAdmin
+<NUL SET /p="Checking powershell version ... "
+!PSSH! -Command "if ($PSVersionTable.PSVersion.Major -lt 3) { exit 1 }"
+IF !ERRORLEVEL! NEQ 0 ( ECHO Fail & ECHO Requires PowerShell 3 or later. & PAUSE & EXIT )
 ECHO OK
 <NUL SET /p="Extract embedded script ... "
-PowerShell -Command "$content = (Get-Content -Path '%~f0' -Encoding UTF8 | Out-String) -replace '(?s)' + [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('OjpCQVRDSF9TVEFSVA==')) + '.*?' + [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('OjpCQVRDSF9FTkQ=')); Set-Content -Path '%~f0.ps1' -Value $content.Trim() -Encoding UTF8"
-IF !ERRORLEVEL! NEQ 0 (ECHO Embedded script section not found. & PAUSE & EXIT)
+!PSSH! -Command "$START = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('OjpCQVRDSF9TVEFSVA==')); $END = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('OjpCQVRDSF9FTkQ=')); $content = ((Get-Content -Path '%~f0' -Raw -Encoding UTF8) -replace '(?s)' + $START + '.*?' + $END).Trim(); if ($content.Length -cle 0) { exit 1 } else { Set-Content -Path 'temp.ps1' -Value $content -Encoding UTF8 }"
+IF !ERRORLEVEL! NEQ 0 ( ECHO Fail & ECHO Embedded script section not found. & PAUSE & EXIT )
 ECHO OK
-<NUL SET /p="Execute script ... "
-PowerShell -NoProfile -ExecutionPolicy Bypass -File "%~f0.ps1" %*
-ECHO OK
-<NUL SET /p="Delete script ... "
-DEL /f /q "%~f0.ps1"
-ECHO OK
+ECHO Execute script
+!PSSH! -File "temp.ps1" %*
+ECHO Delete the execution cache
+DEL /f /q "temp.ps1"
 EXIT
 ::BATCH_END
 param(
@@ -301,7 +305,7 @@ function Get-InputWithNoNullOrWhiteSpace {
                 Write-Host "${Prompt}不能为空！" -ForegroundColor Red
                 continue
             }
-            if ($response -match '^(?!").*(?<!")(?=.*\s).*$') {
+            if ($response -match '^[^"].*\s+.*[^"]$') {
                 $response = "`"$response`""
             }
             return $response.Trim()
@@ -348,7 +352,7 @@ function Get-InputWithDefault {
         if ([string]::IsNullOrWhiteSpace($response)) {
             return $DefaultValue
         }
-        if ($response -match '^(?!").*(?<!")(?=.*\s).*$') {
+        if ($response -match '^[^"].*\s+.*[^"]$') {
             $response = "`"$response`""
         }
         return $response.Trim()
@@ -358,6 +362,32 @@ function Get-InputWithDefault {
         return $DefaultValue
     }
 }
+function Find-ServicesByPath {
+    param (
+        [ValidateNotNullOrEmpty()]
+        [string]$Path
+    )
+    return Get-CimInstance -ClassName Win32_Service | Where-Object { $_.PathName -and ($_.PathName -like "*$Path*") } | Select-Object -ExpandProperty Name
+}
+function Test-ServicesExists {
+    param (
+        [ValidateNotNullOrEmpty()]
+        [string]$Name
+    )
+    return $null -ne (Get-Service | Where-Object { $_.Name -ieq $Name })
+}
+function Test-ServiceRunning {
+    param (
+        [ValidateNotNullOrEmpty()]
+        [string]$Name
+    )
+    $service = Get-Service | Where-Object { $_.Name -ieq $Name }
+    if ($null -eq $service) {
+        return $false
+    }
+    return $service.Status -eq 'Running'
+}
+#main
 function Get-BasicNetworkConfig {
     [CmdletBinding()]
     param()
@@ -625,125 +655,56 @@ function Get-ExtraAdvancedOptions {
     }
     return $options
 }
-function Save-ServiceName {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$FilePath,
-        [Parameter(Mandatory = $true)]
-        [string]$ServiceName
-    )
-    if (-not (Test-ServiceNameExists -FilePath $FilePath -ServiceName $ServiceName)) {
-        $uniqueLines = @()
-        $uniqueLines += Get-Content -Path $FilePath 
-        $uniqueLines += $ServiceName | Sort-Object -Unique
-        Set-Content -Path $FilePath -Value ($uniqueLines -join [Environment]::NewLine) -Encoding UTF8 -Force
-    }
-}
-function Remove-ServiceName {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$FilePath,
-        [Parameter(Mandatory = $true)]
-        [string]$ServiceName
-    )
-    if (Test-ServiceNameExists -FilePath $FilePath -ServiceName $ServiceName) {
-        $uniqueLines = Get-Content -Path $FilePath | Where-Object { $_ -ne $ServiceName } | Sort-Object -Unique
-        Set-Content -Path $FilePath -Value ($uniqueLines -join [Environment]::NewLine) -Encoding UTF8 -Force
-    }
-}
-function Test-ServiceNameExists {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$FilePath,
-        [Parameter(Mandatory = $true)]
-        [string]$ServiceName
-    )
-    if (-Not (Test-Path $FilePath)) {
-        Set-Content -Path $FilePath -Value "" -Encoding UTF8 -Force
-        return $false
-    }
-    $uniqueLines = Get-Content -Path $FilePath | Sort-Object -Unique
-    return $uniqueLines -contains $ServiceName
-}
-$host.ui.rawui.WindowTitle = if ($Uninstall) { "卸载EasyTier服务" } else { "安装EasyTier服务" }  
-Clear-Host
-$ScriptRoot = (Get-Location).Path
-$ServicesPath = Join-Path $ScriptRoot "services"
-$RequiredFiles = @("easytier-core.exe", "easytier-cli.exe", "nssm.exe", "Packet.dll", "wintun.dll")
-foreach ($file in $RequiredFiles) {
-    if (-not (Test-Path (Join-Path $ScriptRoot $file))) {
-        Write-Host "缺少必要文件: ${file}" -ForegroundColor Red
-        Show-Pause -Text "按任意键退出..."
-        exit 1
-    }
-}
+
 try {
-    $nssm = Join-Path $ScriptRoot "nssm.exe"
+    Clear-Host
+    $ScriptRoot = (Get-Location).Path
+    $host.ui.rawui.WindowTitle = if ($Uninstall) { "卸载EasyTier服务" } else { "安装EasyTier服务" }  
+    $CorePath = Join-Path $ScriptRoot "easytier-core.exe"
+    $RequiredFiles = @("easytier-core.exe", "Packet.dll", "wintun.dll")
+    foreach ($file in $RequiredFiles) {
+        if (-not (Test-Path (Join-Path $ScriptRoot $file))) {
+            throw "缺少必要文件: ${file}"
+        }
+    }
     if ($Uninstall) {
-        $Force = $false
-        $Action = "designation"
-        if (-not (Test-ServiceNameExists -FilePath $ServicesPath -ServiceName $ServiceName)) {
-            Write-Host "服务未安装" -ForegroundColor Red
-            if (Show-YesNoPrompt -Message "是否强制卸载？" -DefaultIndex 1) {
-                $Force = $true
-                $Action = "all"
-            }
-            else {
-                Show-Pause -Text "按任意键退出..."    
-                exit 1
-            }
-        }
-        # 参数处理
-        if ($Action -eq "all") {
-            if (-not $Force) {
-                if (-not (Show-YesNoPrompt -Message "确定要完全卸载所有服务吗？" -DefaultIndex 1)) {
-                    Write-Host "已取消卸载操作" -ForegroundColor Yellow
-                    Show-Pause -Text "按任意键退出..."
-                    exit 0
-                }
-            }
-            Write-Host "正在卸载所有服务..." -ForegroundColor Cyan
-            # 读取所有服务名
-            $services = Get-Content $ServicesPath | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
-            if (-not $services) {
-                $services = @($ServiceName)
-            }
-        }
-        else {
-            $services = @($ServiceName)
-        }
+        $services = Find-ServicesByPath -Path $CorePath | Sort-Object -Unique
+        if (-not $services) { $services = @($ServiceName) }
         foreach ($service in $services) {
-            # 停止服务
-            Write-Host "正在停止服务 $service ..."
-            & $nssm stop $service
-            # 删除服务（自动确认）
-            Write-Host "正在移除服务 $service ..."
-            & $nssm remove $service confirm
-            Remove-ServiceName -FilePath $ServicesPath -ServiceName $service
-            Write-Host "服务 $service 已卸载" -ForegroundColor Green
+            try {
+                if (Test-ServicesExists -Name $service) {
+                    if (Test-ServiceRunning -Name $service) {
+                        & sc.exe stop $service | Out-Null
+                    }
+                    & sc.exe delete $service | Out-Null
+                }
+                Write-Host "服务 $service 已卸载" -ForegroundColor Green
+            }
+            catch {
+                Write-Host "服务 $service 卸载失败" -ForegroundColor Rad
+            }
         }
-        # 如果是完全卸载，删除服务记录文件
-        if ($Action -eq "all") {
-            Remove-Item $ServicesPath -Force
-            Write-Host "已删除服务列表文件" -ForegroundColor Green
-        }
-    } 
+    }
     else { 
         $OPTIONS = Get-EasyTierConfig
-        $arguments = $OPTIONS -join ' '
+        $Arguments = $OPTIONS -join ' '
+        $Command = "`"$CorePath`" $Arguments".Replace('"', '\"')
         Write-Host "生成的配置参数如下：" -ForegroundColor Yellow
-        Write-Host ($OPTIONS -join " ") -ForegroundColor DarkGray
+        Write-Host $Arguments -ForegroundColor DarkGray
         if (Show-YesNoPrompt -Message "确认安装配置？" -DefaultIndex 1) {
-            & $nssm install $ServiceName (Join-Path $ScriptRoot "easytier-core.exe")
-            & $nssm set $ServiceName AppParameters $arguments
-            & $nssm set $ServiceName Description "EasyTier 核心服务"
-            & $nssm set $ServiceName AppDirectory $ScriptRoot
-            & $nssm set $ServiceName Start SERVICE_AUTO_START
-            & $nssm start $ServiceName
-            Save-ServiceName -FilePath $ServicesPath -ServiceName $ServiceName
+            if (-not (Test-ServicesExists -Name $ServiceName)) {
+                & sc.exe create $ServiceName binPath= $Command | Out-Null
+                & sc.exe config $ServiceName start= auto displayname= "EasyTier" | Out-Null
+                & sc.exe description $ServiceName "EasyTier 核心服务 运行于 $ScriptRoot" | Out-Null
+            }
+            if (Test-ServiceRunning -Name $ServiceName) {
+                & sc.exe stop $ServiceName | Out-Null
+            }
+            & sc.exe config $ServiceName binPath= $Command | Out-Null
+            & sc.exe start $ServiceName | Out-Null
+            if (-not (Test-ServiceRunning -Name $ServiceName)) {
+                throw "Service failed to start"
+            }
             Write-Host "服务安装完成。" -ForegroundColor Green
         }
         else {
@@ -752,8 +713,9 @@ try {
     }  
 }
 catch {
-    Write-Host "$($host.ui.rawui.WindowTitle)发生错误: $_" -ForegroundColor Red
+    Write-Host "发生错误: $_" -ForegroundColor Red
+}
+finally {
+    Show-Pause -Text "按任意键退出..."
     exit 1
 }
-Show-Pause -Text "按任意键退出..."
-exit
