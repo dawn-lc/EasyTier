@@ -78,157 +78,163 @@ param(
 )
 $I18N = @{
     "zh-CN" = @{
-        PressAnyKey         = "按任意键继续..."
-        Error               = "发生错误: {0}"
-        InitFail            = "环境初始化未成功`n{0}"
-        InputRequired       = "请输入{0}(必填)"
-        InputEmpty          = "{0}不能为空!"
-        FileNotExist        = "文件不存在: {0}"
-        ServiceNotInstalled = "服务未安装"
-        ServiceStopping     = "正在停止服务 {0} ..."
-        ServiceRemoving     = "正在移除服务 {0} ..."
-        ServiceRemoved      = "服务 {0} 已卸载"
-        ServiceRunningFound = "发现正在运行的服务: {0}"
-        DownloadStart       = "开始下载: {0}"
-        ExtractStart        = "开始解压: {0}"
-        CleanTemp           = "清理临时目录..."
-        InstallDone         = "EasyTier {0} 已安装完成!"
-        UpdateDone          = "EasyTier 已成功更新到版本 {0}"
-        FetchLatest         = "检查最新版本..."
-        FetchTag            = "获取指定版本: {0}"
-        FetchFail           = "获取最新版本失败`n{0}"
-        FetchTagFail        = "获取版本 {0} 失败`n{1}"
-        ConfigUnknown       = "未知配置类型: {0}"
-        ConfigConfirm       = "确认安装配置？"
-        ConfigCancel        = "安装已取消。"
-        ConfigDone          = "安装完成。"
-        ProxyConflict       = "UseProxy 和 UseGitHubProxy 不能同时使用"
-        VersionParseFail    = "无法解析返回值: {0}"
-        LocalVersionFail    = "获取本地版本失败`n{0}"
-        AlreadyLatest       = "已经是最新版本 ({0})"
-        UnsupportedOS       = "不支持的操作系统"
-        UnsupportedArch     = "不支持的架构: {0}"
-        StopService         = "停止 EasyTier 服务..."
-        UpdateFile          = "更新文件..."
-        StartService        = "启动服务..."
-        DownloadFail        = "下载失败!`n{0}"
-        ExtractFail         = "解压失败!`n{0}"
-        UpdateFail          = "更新失败!`n{0}"
-        CreateDirFail       = "无法创建目录: {0}`n{1}"
-        CleanFail           = "清理临时目录失败!`n{0}"
-        ConfirmForceRemove  = "是否尝试强制卸载？"
-        ConfirmCustomServer = "是否使用自定义管理服务器？"
-        InputConfigFile     = "配置文件路径(或拖入)"
-        InputServer         = "自定义管理服务器"
-        InputUser           = "官方服务器用户名"
-        InputCLI            = "自定义启动参数"
-        GeneratedArgs       = "生成的配置参数如下:"
-        ChooseConfig        = "您准备如何配置EasyTier?"
-        SelectPrompt        = "请选择:"
-        LabelsHelpsCountMismatch = "Labels 和 Helps 的数量必须相同。"
-        ShowChoiceError     = "显示选择提示时出错: {0}"
-        ReadInputError      = "读取输入时出错: {0}"
-        CompatibleWebRequestError = "[兼容模式]Invoke-WebRequest`n{0}"
-        CompatibleRestMethodError = "[兼容模式]Invoke-RestMethod`n{0}"
+        PressAnyKey                  = "按任意键继续..."
+        Error                        = "发生错误: {0}"
+        InitFail                     = "环境初始化未成功`n{0}"
+        InputRequired                = "请输入{0}(必填)"
+        InputEmpty                   = "{0}不能为空!"
+        FileNotExist                 = "文件不存在: {0}"
+        ServiceNotInstalled          = "服务未安装"
+        ServiceStopping              = "正在停止服务 {0} ..."
+        ServiceRemoving              = "正在移除服务 {0} ..."
+        ServiceRemoved               = "服务 {0} 已卸载"
+        ServiceRunningFound          = "发现正在运行的服务: {0}"
+        DownloadStart                = "开始下载: {0}"
+        ExtractStart                 = "开始解压: {0}"
+        CleanTemp                    = "清理临时目录..."
+        InstallDone                  = "EasyTier {0} 已安装完成!"
+        UpdateDone                   = "EasyTier 已成功更新到版本 {0}"
+        FetchLatest                  = "检查最新版本..."
+        FetchTag                     = "获取指定版本: {0}"
+        FetchFail                    = "获取最新版本失败`n{0}"
+        FetchTagFail                 = "获取版本 {0} 失败`n{1}"
+        ConfigUnknown                = "未知配置类型: {0}"
+        ConfigConfirm                = "确认安装配置？"
+        ConfigCancel                 = "安装已取消。"
+        ConfigDone                   = "安装完成。"
+        ProxyConflict                = "UseProxy 和 UseGitHubProxy 不能同时使用"
+        VersionParseFail             = "无法解析返回值: {0}"
+        LocalVersionFail             = "获取本地版本失败`n{0}"
+        AlreadyLatest                = "已经是最新版本 ({0})"
+        UnsupportedOS                = "不支持的操作系统"
+        UnsupportedArch              = "不支持的架构: {0}"
+        StopService                  = "停止 EasyTier 服务..."
+        UpdateFile                   = "更新文件..."
+        StartService                 = "启动服务..."
+        DownloadFail                 = "下载失败!`n{0}"
+        ExtractFail                  = "解压失败!`n{0}"
+        UpdateFail                   = "更新失败!`n{0}"
+        CreateDirFail                = "无法创建目录: {0}`n{1}"
+        CleanFail                    = "清理临时目录失败!`n{0}"
+        ConfirmForceRemove           = "是否尝试强制卸载？"
+        ConfirmCustomServer          = "是否使用自定义管理服务器？"
+        InputConfigFile              = "配置文件路径(或拖入)"
+        InputServer                  = "自定义管理服务器"
+        InputUser                    = "官方服务器用户名"
+        InputCLI                     = "自定义启动参数"
+        GeneratedArgs                = "生成的配置参数如下:"
+        ChooseConfig                 = "您准备如何配置EasyTier?"
+        ChooseAction                 = "EasyTier服务管理"
+        InstallHelp                  = "安装服务"
+        UninstallHelp                = "卸载服务"
+        SelectPrompt                 = "请选择:"
+        LabelsHelpsCountMismatch     = "Labels 和 Helps 的数量必须相同。"
+        ShowChoiceError              = "显示选择提示时出错: {0}"
+        ReadInputError               = "读取输入时出错: {0}"
+        CompatibleWebRequestError    = "[兼容模式]Invoke-WebRequest`n{0}"
+        CompatibleRestMethodError    = "[兼容模式]Invoke-RestMethod`n{0}"
         CompatibleExpandArchiveError = "[兼容模式]Expand-Archive`n{0}"
-        UnsupportedOSDetailed = "不支持的操作系统: 非Windows环境 ({0})"
-        UnsupportedOSUnable = "不支持的操作系统: 无法确定平台"
-        UnsupportedArchDetailed = "不支持的CPU架构: windows-{0}"
-        LocalProgramNotFound = "未找到本地程序!"
-        FetchLatestFailDetailed = "获取最新版本失败。请检查网络连接或API请求达到上限`n{0}"
-        FetchTagFailDetailed = "获取版本 {0} 失败。请检查网络连接或该版本是否存在`n{1}"
-        VersionConsistent    = "本地版本与{0}版本一致, 无需重复获取。"
-        PlatformNotAdapted   = "未适配当前平台!"
-        CreateFolderFail    = "无法创建文件夹 {0}`n{1}"
-        StopServiceFail     = "停止服务失败!`n{0}"
-        UpdateFileFail      = "更新文件失败!`n{0}"
-        ServiceStartFail    = "服务启动失败!`n{0}"
-        UpdateFileFailDetailed = "更新文件失败! 请检查脚本是否过时或者文件/文件夹是否被其他程序占用"
-        UseProxyConflictDetailed = "UseProxy 和 UseGitHubProxy 参数不能同时使用，请选择其中一种代理方式。"
-        WindowTitle         = "安装/卸载/更新 EasyTier 服务"
-        ExitPrompt          = "按任意键退出..."
-        LatestVersion       = "最新"
-        SpecifiedVersion    = "指定({0})"
-        FileModeHelp        = "本地配置文件"
-        RemoteModeHelp      = "服务器集中管理"
-        CLIModeHelp         = "命令行传参"
+        UnsupportedOSDetailed        = "不支持的操作系统: 非Windows环境 ({0})"
+        UnsupportedOSUnable          = "不支持的操作系统: 无法确定平台"
+        UnsupportedArchDetailed      = "不支持的CPU架构: windows-{0}"
+        LocalProgramNotFound         = "未找到本地程序!"
+        FetchLatestFailDetailed      = "获取最新版本失败。请检查网络连接或API请求达到上限`n{0}"
+        FetchTagFailDetailed         = "获取版本 {0} 失败。请检查网络连接或该版本是否存在`n{1}"
+        VersionConsistent            = "本地版本与{0}版本一致, 无需重复获取。"
+        PlatformNotAdapted           = "未适配当前平台!"
+        CreateFolderFail             = "无法创建文件夹 {0}`n{1}"
+        StopServiceFail              = "停止服务失败!`n{0}"
+        UpdateFileFail               = "更新文件失败!`n{0}"
+        ServiceStartFail             = "服务启动失败!`n{0}"
+        UpdateFileFailDetailed       = "更新文件失败! 请检查脚本是否过时或者文件/文件夹是否被其他程序占用"
+        UseProxyConflictDetailed     = "UseProxy 和 UseGitHubProxy 参数不能同时使用，请选择其中一种代理方式。"
+        WindowTitle                  = "安装/卸载/更新 EasyTier 服务"
+        ExitPrompt                   = "按任意键退出..."
+        LatestVersion                = "最新"
+        SpecifiedVersion             = "指定({0})"
+        FileModeHelp                 = "本地配置文件"
+        RemoteModeHelp               = "服务器集中管理"
+        CLIModeHelp                  = "命令行传参"
     }
 
     "en-US" = @{
-        PressAnyKey         = "Press any key to continue..."
-        Error               = "Error: {0}"
-        InitFail            = "Initialization failed`n{0}"
-        InputRequired       = "Enter {0} (required)"
-        InputEmpty          = "{0} cannot be empty!"
-        FileNotExist        = "File not found: {0}"
-        ServiceNotInstalled = "Service not installed"
-        ServiceStopping     = "Stopping service {0} ..."
-        ServiceRemoving     = "Removing service {0} ..."
-        ServiceRemoved      = "Service {0} removed"
-        ServiceRunningFound = "Running service found: {0}"
-        DownloadStart       = "Downloading: {0}"
-        ExtractStart        = "Extracting: {0}"
-        CleanTemp           = "Cleaning temp directory..."
-        InstallDone         = "Installed EasyTier {0}"
-        UpdateDone          = "Updated to version {0}"
-        FetchLatest         = "Checking latest version..."
-        FetchTag            = "Fetching version: {0}"
-        FetchFail           = "Failed to fetch latest`n{0}"
-        FetchTagFail        = "Failed to fetch {0}`n{1}"
-        ConfigUnknown       = "Unknown config type: {0}"
-        ConfigConfirm       = "Confirm install?"
-        ConfigCancel        = "Cancelled"
-        ConfigDone          = "Done"
-        ProxyConflict       = "UseProxy and UseGitHubProxy conflict"
-        VersionParseFail    = "Cannot parse version: {0}"
-        LocalVersionFail    = "Failed to get local version`n{0}"
-        AlreadyLatest       = "Already latest ({0})"
-        UnsupportedOS       = "Unsupported OS"
-        UnsupportedArch     = "Unsupported architecture: {0}"
-        StopService         = "Stopping service..."
-        UpdateFile          = "Updating files..."
-        StartService        = "Starting service..."
-        DownloadFail        = "Download failed`n{0}"
-        ExtractFail         = "Extract failed`n{0}"
-        UpdateFail          = "Update failed`n{0}"
-        CreateDirFail       = "Cannot create dir {0}`n{1}"
-        CleanFail           = "Clean failed`n{0}"
-        ConfirmForceRemove  = "Force uninstall?"
-        ConfirmCustomServer = "Use custom server?"
-        InputConfigFile     = "Config file path"
-        InputServer         = "Custom server"
-        InputUser           = "Username"
-        InputCLI            = "CLI args"
-        GeneratedArgs       = "Generated args:"
-        ChooseConfig        = "Select config mode"
-        SelectPrompt        = "Choose:"
-        LabelsHelpsCountMismatch = "Labels and Helps count must match."
-        ShowChoiceError     = "Error showing choice prompt: {0}"
-        ReadInputError      = "Error reading input: {0}"
-        CompatibleWebRequestError = "[Compatible]Invoke-WebRequest`n{0}"
-        CompatibleRestMethodError = "[Compatible]Invoke-RestMethod`n{0}"
+        PressAnyKey                  = "Press any key to continue..."
+        Error                        = "Error: {0}"
+        InitFail                     = "Initialization failed`n{0}"
+        InputRequired                = "Enter {0} (required)"
+        InputEmpty                   = "{0} cannot be empty!"
+        FileNotExist                 = "File not found: {0}"
+        ServiceNotInstalled          = "Service not installed"
+        ServiceStopping              = "Stopping service {0} ..."
+        ServiceRemoving              = "Removing service {0} ..."
+        ServiceRemoved               = "Service {0} removed"
+        ServiceRunningFound          = "Running service found: {0}"
+        DownloadStart                = "Downloading: {0}"
+        ExtractStart                 = "Extracting: {0}"
+        CleanTemp                    = "Cleaning temp directory..."
+        InstallDone                  = "Installed EasyTier {0}"
+        UpdateDone                   = "Updated to version {0}"
+        FetchLatest                  = "Checking latest version..."
+        FetchTag                     = "Fetching version: {0}"
+        FetchFail                    = "Failed to fetch latest`n{0}"
+        FetchTagFail                 = "Failed to fetch {0}`n{1}"
+        ConfigUnknown                = "Unknown config type: {0}"
+        ConfigConfirm                = "Confirm install?"
+        ConfigCancel                 = "Cancelled"
+        ConfigDone                   = "Done"
+        ProxyConflict                = "UseProxy and UseGitHubProxy conflict"
+        VersionParseFail             = "Cannot parse version: {0}"
+        LocalVersionFail             = "Failed to get local version`n{0}"
+        AlreadyLatest                = "Already latest ({0})"
+        UnsupportedOS                = "Unsupported OS"
+        UnsupportedArch              = "Unsupported architecture: {0}"
+        StopService                  = "Stopping service..."
+        UpdateFile                   = "Updating files..."
+        StartService                 = "Starting service..."
+        DownloadFail                 = "Download failed`n{0}"
+        ExtractFail                  = "Extract failed`n{0}"
+        UpdateFail                   = "Update failed`n{0}"
+        CreateDirFail                = "Cannot create dir {0}`n{1}"
+        CleanFail                    = "Clean failed`n{0}"
+        ConfirmForceRemove           = "Force uninstall?"
+        ConfirmCustomServer          = "Use custom server?"
+        InputConfigFile              = "Config file path"
+        InputServer                  = "Custom server"
+        InputUser                    = "Username"
+        InputCLI                     = "CLI args"
+        GeneratedArgs                = "Generated args:"
+        ChooseConfig                 = "Select config mode"
+        ChooseAction                 = "EasyTier service manage"
+        InstallHelp                  = "Install service"
+        UninstallHelp                = "Uninstall service"
+        SelectPrompt                 = "Choose:"
+        LabelsHelpsCountMismatch     = "Labels and Helps count must match."
+        ShowChoiceError              = "Error showing choice prompt: {0}"
+        ReadInputError               = "Error reading input: {0}"
+        CompatibleWebRequestError    = "[Compatible]Invoke-WebRequest`n{0}"
+        CompatibleRestMethodError    = "[Compatible]Invoke-RestMethod`n{0}"
         CompatibleExpandArchiveError = "[Compatible]Expand-Archive`n{0}"
-        UnsupportedOSDetailed = "Unsupported OS: Non-Windows platform detected ({0})"
-        UnsupportedOSUnable = "Unsupported OS: Unable to determine platform."
-        UnsupportedArchDetailed = "Unsupported architecture: windows-{0}"
-        LocalProgramNotFound = "Local program not found!"
-        FetchLatestFailDetailed = "Failed to fetch latest version. Check network or API limit`n{0}"
-        FetchTagFailDetailed = "Failed to fetch version {0}. Check network or version existence`n{1}"
-        VersionConsistent    = "Local version is consistent with {0} version, no need to fetch again."
-        PlatformNotAdapted   = "Platform not adapted!"
-        CreateFolderFail    = "Cannot create folder {0}`n{1}"
-        StopServiceFail     = "Failed to stop service!`n{0}"
-        UpdateFileFail      = "Failed to update files!`n{0}"
-        ServiceStartFail    = "Failed to start service!`n{0}"
-        UpdateFileFailDetailed = "Failed to update files! Check if script is outdated or files/folders are occupied"
-        UseProxyConflictDetailed = "UseProxy and UseGitHubProxy cannot be used together, choose one proxy method."
-        WindowTitle         = "Install/Uninstall/Update EasyTier Service"
-        ExitPrompt          = "Press any key to exit..."
-        LatestVersion       = "latest"
-        SpecifiedVersion    = "specified({0})"
-        FileModeHelp        = "Local configuration file"
-        RemoteModeHelp      = "Remote server centralized management"
-        CLIModeHelp         = "Command line arguments"
+        UnsupportedOSDetailed        = "Unsupported OS: Non-Windows platform detected ({0})"
+        UnsupportedOSUnable          = "Unsupported OS: Unable to determine platform."
+        UnsupportedArchDetailed      = "Unsupported architecture: windows-{0}"
+        LocalProgramNotFound         = "Local program not found!"
+        FetchLatestFailDetailed      = "Failed to fetch latest version. Check network or API limit`n{0}"
+        FetchTagFailDetailed         = "Failed to fetch version {0}. Check network or version existence`n{1}"
+        VersionConsistent            = "Local version is consistent with {0} version, no need to fetch again."
+        PlatformNotAdapted           = "Platform not adapted!"
+        CreateFolderFail             = "Cannot create folder {0}`n{1}"
+        StopServiceFail              = "Failed to stop service!`n{0}"
+        UpdateFileFail               = "Failed to update files!`n{0}"
+        ServiceStartFail             = "Failed to start service!`n{0}"
+        UpdateFileFailDetailed       = "Failed to update files! Check if script is outdated or files/folders are occupied"
+        UseProxyConflictDetailed     = "UseProxy and UseGitHubProxy cannot be used together, choose one proxy method."
+        WindowTitle                  = "Install/Uninstall/Update EasyTier Service"
+        ExitPrompt                   = "Press any key to exit..."
+        LatestVersion                = "latest"
+        SpecifiedVersion             = "specified({0})"
+        FileModeHelp                 = "Local configuration file"
+        RemoteModeHelp               = "Remote server centralized management"
+        CLIModeHelp                  = "Command line arguments"
     }
 }
 $script:Lang = (Get-UICulture).Name
@@ -735,6 +741,35 @@ function Update-EasyTier {
         throw (T "CleanFail" $_)
     }
 }
+function Uninstall-EasyTier {
+    $services = Get-ServiceNames
+    if ($services.Count -lt 1 -and (-not (Test-ServiceNameExists -Name $ServiceName))) {
+        Write-Host (T "ServiceNotInstalled") -ForegroundColor Red
+        if (Show-YesNoPrompt -Message (T "ConfirmForceRemove") -DefaultIndex 1) {
+            Write-Host (T "ServiceStopping" $ServiceName)
+            Stop-Service -Name $ServiceName -Force -ErrorAction SilentlyContinue
+            Write-Host (T "ServiceRemoving" $ServiceName)
+            Remove-ServiceCompatible -Name "$ServiceName" -ErrorAction SilentlyContinue
+            Remove-ServiceName -Name $ServiceName -ErrorAction SilentlyContinue
+            Write-Host (T "ServiceRemoved" $ServiceName) -ForegroundColor Green
+        }
+    }
+    else {
+        foreach ($service in $services) {
+            if (Get-Service -Name $service -ErrorAction SilentlyContinue) {
+                Write-Host (T "ServiceStopping" $service)
+                Stop-Service -Name $service -Force
+                Write-Host (T "ServiceRemoving" $service)
+                Remove-ServiceCompatible -Name "$service"
+                Remove-ServiceName -Name $service
+            }
+            Write-Host (T "ServiceRemoved" $service) -ForegroundColor Green
+        }
+    }
+    Show-Pause -Text (T "ExitPrompt")
+    Unregister-ScheduledTask -TaskName "EasyTierWatchDog" -Confirm:$false -ErrorAction SilentlyContinue | Out-Null
+    exit 0
+}
 $HelpText = @"
 EasyTier Service Management Script
 
@@ -844,35 +879,6 @@ try {
     if ($UseProxy -and $UseGitHubProxy) {
         throw (T "UseProxyConflictDetailed")
     }
-    if ($Uninstall) {
-        $services = Get-ServiceNames
-        if ($services.Count -lt 1 -and (-not (Test-ServiceNameExists -Name $ServiceName))) {
-            Write-Host (T "ServiceNotInstalled") -ForegroundColor Red
-            if (Show-YesNoPrompt -Message (T "ConfirmForceRemove") -DefaultIndex 1) {
-                Write-Host (T "ServiceStopping" $ServiceName)
-                Stop-Service -Name $ServiceName -Force -ErrorAction SilentlyContinue
-                Write-Host (T "ServiceRemoving" $ServiceName)
-                Remove-ServiceCompatible -Name "$ServiceName" -ErrorAction SilentlyContinue
-                Remove-ServiceName -Name $ServiceName -ErrorAction SilentlyContinue
-                Write-Host (T "ServiceRemoved" $ServiceName) -ForegroundColor Green
-            }
-        }
-        else {
-            foreach ($service in $services) {
-                if (Get-Service -Name $service -ErrorAction SilentlyContinue) {
-                    Write-Host (T "ServiceStopping" $service)
-                    Stop-Service -Name $service -Force
-                    Write-Host (T "ServiceRemoving" $service)
-                    Remove-ServiceCompatible -Name "$service"
-                    Remove-ServiceName -Name $service
-                }
-                Write-Host (T "ServiceRemoved" $service) -ForegroundColor Green
-            }
-        }
-        Show-Pause -Text (T "ExitPrompt")
-        Unregister-ScheduledTask -TaskName "EasyTierWatchDog" -Confirm:$false -ErrorAction SilentlyContinue | Out-Null
-        exit 0
-    }
     if ($Update) {
         Get-EasyTier | Update-EasyTier
         Show-Pause -Text (T "ExitPrompt")
@@ -881,13 +887,34 @@ try {
     if (-not (Test-Path $EasyTierPath)) {
         Get-EasyTier | Install-EasyTier
     }
+    if ($Uninstall) {
+        Uninstall-EasyTier
+    }
     if (-not $ConfigType) {
         $choices = @(
-            [System.Management.Automation.Host.ChoiceDescription]::new("&File", (T "FileModeHelp")),
-            [System.Management.Automation.Host.ChoiceDescription]::new("&Remote", (T "RemoteModeHelp")),
-            [System.Management.Automation.Host.ChoiceDescription]::new("&CLI", (T "CLIModeHelp"))
+            New-Object System.Management.Automation.Host.ChoiceDescription "&Install", (T "InstallHelp")
+            New-Object System.Management.Automation.Host.ChoiceDescription "&Uninstall", (T "UninstallHelp")
         )
-        $selected = $Host.UI.PromptForChoice((T "ChooseConfig"), (T "SelectPrompt"), $choices, 0)
+        $selected = $Host.UI.PromptForChoice(
+            (T "ChooseAction"),
+            (T "SelectPrompt"),
+            $choices,
+            0
+        )
+        if ($selected -eq 1) {
+            Uninstall-EasyTier
+        }
+        $choices = @(
+            New-Object System.Management.Automation.Host.ChoiceDescription "&File", (T "FileModeHelp")
+            New-Object System.Management.Automation.Host.ChoiceDescription "&Remote", (T "RemoteModeHelp")
+            New-Object System.Management.Automation.Host.ChoiceDescription "&CLI", (T "CLIModeHelp")
+        )
+        $selected = $Host.UI.PromptForChoice(
+            (T "ChooseConfig"),
+            (T "SelectPrompt"),
+            $choices,
+            0
+        )
         $ConfigType = @("File", "Remote", "CLI")[$selected]
     }
     switch ($ConfigType) {
